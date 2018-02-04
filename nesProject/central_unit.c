@@ -24,8 +24,9 @@ void command_switch(unsigned char command)
         printf("Alarm Toggled\n");
         isAlarmOn = !isAlarmOn;
         
-        sendDoorNode(&command, 1);
+        sendSpeakers(&command, 1);
         sendGateNode(&command, 1);
+        sendDoorNode(&command, 1);
 
         return;
     }

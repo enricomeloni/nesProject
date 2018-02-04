@@ -4,7 +4,10 @@ PROJECT_SOURCEFILES += \
     gate/gateRimeStack.c gate/gateAutoOpeningProcess.c \
     door/doorRimeStack.c door/averageTemperatureProcess.c door/doorAutoOpeningProcess.c \
 	home_theater/htRimeStack.c \
-	roomLight/roomLightRimeStack.c
+	roomLight/roomLightRimeStack.c \
+	oven/ovenRimeStack.c \
+	speaker/ovenAlarm_process.c speaker/speakerRimeStack.c
+
 
 CONTIKI = ../contiki
 CONTIKI_WITH_RIME = 1
@@ -21,6 +24,9 @@ mydirs:
 	mkdir $(OBJECTDIR)/central_unit -p
 	mkdir $(OBJECTDIR)/home_theater -p
 	mkdir $(OBJECTDIR)/roomLight -p
+	mkdir $(OBJECTDIR)/oven -p
+	mkdir $(OBJECTDIR)/speaker -p
+
 
 gate: mydirs gate_node
 
@@ -32,4 +38,8 @@ ht: mydirs hometheater_node
 
 rl: mydirs roomLight_node
 
-all: gate cu door ht rl
+oven: mydirs oven_node
+
+speaker: mydirs speaker_node
+
+all: gate cu door ht rl oven speaker

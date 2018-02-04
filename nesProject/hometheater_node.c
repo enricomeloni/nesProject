@@ -8,8 +8,8 @@
 #include "commons/command_process.h"
 #include "home_theater/htRimeStack.h"
 
-PROCESS(mbox_node_init, "Mbox Node init Process");
-AUTOSTART_PROCESSES(&mbox_node_init, &command_process);
+PROCESS(hometheater_node_init, "Hometheater Node init Process");
+AUTOSTART_PROCESSES(&hometheater_node_init, &command_process);
 
 /*
     state = 0 stopped
@@ -46,12 +46,10 @@ void command_switch(unsigned char command)
             case HT_PAUSED:
                 state = HT_PLAYING;
                 rlCommand = RL_DIM;
-		        printf("Send DIM command\n");
                 break;
             case HT_PLAYING:
                 state = HT_PAUSED;
                 rlCommand = RL_BRIGHTEN;
-                printf("Send BRIGHTEN command\n");
                 break;
         }
 		sendToRoomLightNode(&rlCommand, 1);
@@ -62,7 +60,6 @@ void command_switch(unsigned char command)
         {
             state = HT_STOPPED;
             rlCommand = RL_TURN_ON;
-            printf("Send TURN_ON command\n");
 		    sendToRoomLightNode(&rlCommand, 1);
         }
         else if(state == HT_STOPPED)
@@ -76,7 +73,7 @@ void command_switch(unsigned char command)
     setLeds(state);
 }
 
-PROCESS_THREAD(mbox_node_init, ev, data)
+PROCESS_THREAD(hometheater_node_init, ev, data)
 {
 	PROCESS_BEGIN();
 		initHTRimeStack();

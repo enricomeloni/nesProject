@@ -19,15 +19,20 @@
 #define RL_NODE_HIGH 5
 #define RL_NODE_LOW 0
 
+#define OVEN_NODE_HIGH 6
+#define OVEN_NODE_LOW 0
+
 #define CU_DOOR_CHANNEL 144
 #define CU_GATE_CHANNEL 154
 #define HT_RL_CHANNEL 164
+#define SPEAKER_CHANNEL 174
 
 extern linkaddr_t centralNodeAddress;
 extern linkaddr_t doorNodeAddress;
 extern linkaddr_t gateNodeAddress;
 extern linkaddr_t htNodeAddress;
 extern linkaddr_t rlNodeAddress;
+extern linkaddr_t ovenNodeAddress;
 
 void setNodesAddresses();
 
