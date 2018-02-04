@@ -19,6 +19,8 @@ PROCESS(door_node_main, "Door Node Main Process");
 
 AUTOSTART_PROCESSES(&door_node_main, &alarm_process, &averageTemperatureProcess);
 
+extern process_event_t alarm_toggled_event;
+
 void processCUCommand(unsigned char command)
 {
 	if( command == ALARM_TOGGLE_COMMAND )

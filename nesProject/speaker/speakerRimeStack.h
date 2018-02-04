@@ -1,0 +1,10 @@
+//
+// Created by Raff on 31/10/2017.
+//
+
+#ifndef NESPROJECT_SPEAKERRIMESTACK_H
+#define NESPROJECT_SPEAKERRIMESTACK_H
+
+void initSpeakerRimeStack();
+
+#endif //NESPROJECT_SPEAKERRIMESTACK_H

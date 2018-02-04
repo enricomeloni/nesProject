@@ -35,7 +35,9 @@ PROCESS_THREAD(gateAutoOpeningProcess, ev, data)
 			PROCESS_WAIT_EVENT();
 			if(ev == PROCESS_EVENT_TIMER && etimer_expired(&blinkingTimer))
 			{
+				#if DEBUG
 				printf("Gate auto opening: blinking\n");
+				#endif
 				leds_toggle(LEDS_BLUE);
 				etimer_reset(&blinkingTimer);
 				blinkings++;

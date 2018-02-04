@@ -13,7 +13,11 @@
 			"command_process.h": "c",
 			"addresses.h": "c",
 			"light.h": "c",
-			"lock.h": "c"
+			"lock.h": "c",
+			"speakerrimestack.h": "c",
+			"alarm_process.h": "c",
+			"ovenrimestack.h": "c",
+			"ovenalarm_process.h": "c"
 		}
 	}
 }

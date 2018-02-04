@@ -9,6 +9,7 @@ linkaddr_t doorNodeAddress;
 linkaddr_t gateNodeAddress;
 linkaddr_t htNodeAddress;
 linkaddr_t rlNodeAddress;
+linkaddr_t ovenNodeAddress;
 
 
 void setNodesAddresses()
@@ -27,4 +28,7 @@ void setNodesAddresses()
 
     rlNodeAddress.u8[0] = RL_NODE_HIGH;
     rlNodeAddress.u8[1] = RL_NODE_LOW;
+
+    ovenNodeAddress.u8[0] = OVEN_NODE_HIGH;
+    ovenNodeAddress.u8[1] = OVEN_NODE_LOW;
 }

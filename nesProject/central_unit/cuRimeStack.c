@@ -20,11 +20,13 @@ static void recv_runicast(struct runicast_conn *c, const linkaddr_t *from, uint8
 
 	int payloadSize = *( (int*)buffer);
 
+	#if DEBUG
     printf("runicast message received from %d.%d, seqno %d, message: %c\n",
            from->u8[0],
            from->u8[1],
            seqno,
            *(buffer+4));
+	#endif
 
 	if(linkaddr_cmp(from, &doorNodeAddress))
 	{
@@ -42,22 +44,26 @@ static void recv_runicast(struct runicast_conn *c, const linkaddr_t *from, uint8
 
 static void sent_runicast(struct runicast_conn *c, const linkaddr_t *to, uint8_t retransmissions)
 {
+	#if DEBUG
 	printf("runicast message sent to %d.%d, retransmissions %d\n", to->u8[0], to->u8[1], retransmissions);
+	#endif
 }
 
 static void timedout_runicast(struct runicast_conn *c, const linkaddr_t *to, uint8_t retransmissions)
 {
+	#if DEBUG
 	printf("runicast message timed out when sending to %d.%d, retransmissions %d\n", to->u8[0], to->u8[1], retransmissions);
+	#endif
 }
 
 static const struct runicast_callbacks runicast_calls = {recv_runicast, sent_runicast, timedout_runicast};
 static struct runicast_conn doorRunicastConnection;
 static struct runicast_conn gateRunicastConnection;
- static void
-broadcast_recv(struct broadcast_conn *c, const linkaddr_t *from){}
 
-static struct broadcast_conn roomLightBroadcastConnection;
-static const struct broadcast_callbacks broadcast_call = {broadcast_recv};
+
+static void recv_broadcast(struct broadcast_conn *c, const linkaddr_t *from){}
+static const struct broadcast_callbacks broadcast_calls = {recv_broadcast};
+static struct broadcast_conn speakerBroadcastConnection;
 
 
 
@@ -73,10 +79,10 @@ void sendGateNode(unsigned char* c, int bytes)
 	runicast_send(&gateRunicastConnection, &gateNodeAddress, MAX_RETRANSMISSIONS);
 }
 
-void sendRoomLightNodes(unsigned char* c, int bytes)
+void sendSpeakers(unsigned char* c, int bytes)
 {
-	packetbuf_copyfrom(c,bytes);
-	broadcast_send(&roomLightBroadcastConnection);
+	packetbuf_copyfrom(c, bytes);
+	broadcast_send(&speakerBroadcastConnection);
 }
 
 void initCURimeStack()
@@ -87,4 +93,6 @@ void initCURimeStack()
 	
 	runicast_open(&doorRunicastConnection, CU_DOOR_CHANNEL, &runicast_calls);
 	runicast_open(&gateRunicastConnection, CU_GATE_CHANNEL, &runicast_calls);
+	
+	broadcast_open(&speakerBroadcastConnection, SPEAKER_CHANNEL, &broadcast_calls);
 }
