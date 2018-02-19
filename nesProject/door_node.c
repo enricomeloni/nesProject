@@ -55,20 +55,18 @@ void processCUCommand(unsigned char command)
 					printf("Average temp is: %d\n",
 						   (int) averageTemperature);
 
-					//1 byte for cmd, 4 bytes for payload size, 
-					//4 bytes for float
-					unsigned char buff[9];
+					//1 byte for cmd, 4 bytes for float
+					unsigned char buff[5];
 
 					//1byte for cmd, 4 bytes for float
-					int* payloadSize = (int*)buff;
-					*payloadSize = 5;
+					int payloadSize = 5;
 
-					*(buff+4) = AVERAGE_TEMPERATURE_COMMAND;
+					*buff = AVERAGE_TEMPERATURE_COMMAND;
 
-					float* floatBuff = (float*)(buff+5);
+					float* floatBuff = (float*)(buff+1);
 					*floatBuff = (float)averageTemperature;
 
-                    sendFromDoorToCentralUnit(buff, 9);
+                    sendFromDoorToCentralUnit(buff, payloadSize);
 
 					break;
 				}

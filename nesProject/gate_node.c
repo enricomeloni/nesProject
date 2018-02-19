@@ -61,16 +61,15 @@ void processCUCommand(unsigned char command)
 
 					//1 byte for cmd, 4 bytes for payload size, 
 					//4 bytes for float
-					unsigned char buff[9];
+					unsigned char buff[5];
 
 					//payload size is 5 bytes, cmd:1bytes; float:4bytes
-					int* payloadSize = (int*)buff;
-					*payloadSize = 5;
-					*(buff+4) = LIGHT_VALUE_COMMAND;
-					float* floatBuff = (float*)(buff+5);
-					*floatBuff = (float) externalLight;
+					int payloadSize = 5;
+					*(buff) = LIGHT_VALUE_COMMAND;
+					float* floatBuff = (float*)(buff+1);
+					*floatBuff = (float)externalLight;
 					
-					sendFromGateToCentralUnit(buff,9);
+					sendFromGateToCentralUnit(buff,payloadSize);
 					break;
 				}
 				

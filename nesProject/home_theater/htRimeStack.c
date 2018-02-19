@@ -1,16 +1,10 @@
-//
-// Created by Raff on 31/10/2017.
-//
 #include "htRimeStack.h"
 #include "commons/addresses.h"
 #include "commons/constants.h"
 
-#include "stdio.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include "net/rime/rime.h"
-
-extern void processDoorMessage(unsigned char* message, int payloadSize);
-extern void processGateMessage(unsigned char* message, int payloadSize);
-extern void processMboxMessage(unsigned char* message, int payloadSize);
 
 extern void setNodesAddresses();
 
@@ -28,17 +22,20 @@ static void timedout_runicast(struct runicast_conn *c, const linkaddr_t *to, uin
 
 static const struct runicast_callbacks runicast_calls = {recv_runicast, sent_runicast, timedout_runicast};
 
-static struct runicast_conn roomLightRunicastConnection;
+static struct runicast_conn cuRunicastConnection;
 
 void sendToRoomLightNode(unsigned char* c, int bytes)
 {
-	packetbuf_copyfrom(c,bytes);
-	runicast_send(&roomLightRunicastConnection, &rlNodeAddress, MAX_RETRANSMISSIONS);
+	unsigned char* buffer;
+	char bufferLength = setBuffer(&buffer, c, bytes, HT_NODE_HIGH, RL_NODE_HIGH);
+	packetbuf_copyfrom(buffer, bufferLength);
+	runicast_send(&cuRunicastConnection, &centralNodeAddress, MAX_RETRANSMISSIONS);
+	free(buffer);
 }
 
 void initHTRimeStack()
 {
 	setNodesAddresses();
 	printf("My address is %d.%d\n", linkaddr_node_addr.u8[0], linkaddr_node_addr.u8[1]);
-	runicast_open(&roomLightRunicastConnection, HT_RL_CHANNEL, &runicast_calls);
+	runicast_open(&cuRunicastConnection, HT_CU_CHANNEL, &runicast_calls);
 }

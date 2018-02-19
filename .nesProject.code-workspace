@@ -13,7 +13,10 @@
 			"command_process.h": "c",
 			"addresses.h": "c",
 			"light.h": "c",
-			"lock.h": "c"
+			"lock.h": "c",
+			"array": "c",
+			"initializer_list": "c",
+			"utility": "c"
 		}
 	}
 }

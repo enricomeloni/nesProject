@@ -2,6 +2,8 @@
 // Created by enric on 29/10/2017.
 //
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "addresses.h"
 
 linkaddr_t centralNodeAddress;
@@ -27,4 +29,16 @@ void setNodesAddresses()
 
     rlNodeAddress.u8[0] = RL_NODE_HIGH;
     rlNodeAddress.u8[1] = RL_NODE_LOW;
+}
+
+char setBuffer(unsigned char** bufferAddr, unsigned char* payload, char payloadSize, char src, char dst)
+{
+	char bufferLength = payloadSize+3;
+	unsigned char* buffer = (unsigned char*)malloc(bufferLength);
+    buffer[0] = src;
+	buffer[1] = dst;
+	buffer[2] = payloadSize;
+	memcpy(buffer+3, payload, payloadSize);
+    *bufferAddr = buffer;
+    return bufferLength;
 }

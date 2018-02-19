@@ -21,7 +21,8 @@
 
 #define CU_DOOR_CHANNEL 144
 #define CU_GATE_CHANNEL 154
-#define HT_RL_CHANNEL 164
+#define HT_CU_CHANNEL 164
+#define CU_RL_CHANNEL 174
 
 extern linkaddr_t centralNodeAddress;
 extern linkaddr_t doorNodeAddress;
@@ -30,5 +31,6 @@ extern linkaddr_t htNodeAddress;
 extern linkaddr_t rlNodeAddress;
 
 void setNodesAddresses();
+char setBuffer(unsigned char** bufferAddr, unsigned char* payload, char payloadSize, char src, char dst);
 
 #endif //NESPROJECT_ADDRESSES_H

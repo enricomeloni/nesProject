@@ -6,7 +6,8 @@
 #include "commons/addresses.h"
 #include "commons/constants.h"
 
-#include "stdio.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include "net/rime/rime.h"
 
 extern void processCUCommand(unsigned char command);
@@ -14,17 +15,30 @@ extern void setNodesAddresses();
 
 static void recv_runicast(struct runicast_conn *c, const linkaddr_t *from, uint8_t seqno)
 {
-	unsigned char receivedCommand = *( (unsigned char*)packetbuf_dataptr() );
+	unsigned char* buffer = packetbuf_dataptr();
+	char srcNode = *buffer;
+	char dstNode = *(buffer+1);
+	char payloadSize = *(buffer+2);
+	unsigned char* payload = buffer+3;
 	
-	printf("runicast message received from %d.%d, seqno %d, message: %c\n",
+	printf("runicast message received from %d.%d, seqno: %d, cmd: %d\n",
 		   from->u8[0],
 		   from->u8[1],
 		   seqno,
-		   receivedCommand);
+		   *payload);
 	
-	if(linkaddr_cmp(from, &centralNodeAddress))
+	if(dstNode != GATE_NODE_HIGH)
+		return; //this node doesn't forward
+	if(srcNode == CENTRAL_UNIT_HIGH)
 	{
-		processCUCommand(receivedCommand);
+		//retrieve command
+		if(payloadSize == 1)
+		{
+			char receivedCommand = *payload;
+			processCUCommand(receivedCommand);
+		}
+		else
+			printf("Invalid payload size\n");
 	}
 	else
 	{
@@ -50,6 +64,9 @@ void initGateRimeStack()
 
 void sendFromGateToCentralUnit(unsigned char *cmd, int bytes)
 {
-    packetbuf_copyfrom(cmd, bytes);
+	unsigned char* buffer;
+	char bufferLength = setBuffer(&buffer, cmd, bytes, GATE_NODE_HIGH, CENTRAL_UNIT_HIGH);
+    packetbuf_copyfrom(buffer, bufferLength);
     runicast_send(&cuRunicastConnection, &centralNodeAddress, MAX_RETRANSMISSIONS);
+	free(buffer);
 }
