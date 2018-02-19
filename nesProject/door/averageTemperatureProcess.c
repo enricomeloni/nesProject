@@ -1,10 +1,9 @@
-//
-// Created by Raff on 06/11/2017.
-//
-
 #include "averageTemperatureProcess.h"
 
-#include "stdio.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include "random.h"
+#include "clock.h"
 #include "contiki.h"
 #include "dev/sht11/sht11-sensor.h"
 
@@ -35,6 +34,7 @@ PROCESS_THREAD(averageTemperatureProcess, ev, data)
 	PROCESS_BEGIN();
 		
 		etimer_set(&temperatureTimer, TEMPERATURE_MEASURING_PERIOD * CLOCK_SECOND);
+		random_init(clock_time());
 		
 		while(1)
 		{
@@ -50,6 +50,10 @@ PROCESS_THREAD(averageTemperatureProcess, ev, data)
 			
 			double measuredTemperature = -39.60 + 0.01*rawTemperatureReading;
 			//printf("Temp measured %d\n", (int)measuredTemperature);
+
+    		double randomVariation = (double)random_rand()/RANDOM_RAND_MAX*2.0-1.0;//float in range -1 to 1
+			randomVariation *= MAX_TEMP_VARIATION;
+			measuredTemperature += randomVariation;
 			
 			temperatureReadings[lastTemperatureIndex] = measuredTemperature;
 			lastTemperatureIndex = (lastTemperatureIndex + 1) % MAX_TEMPERATURE_READINGS;
