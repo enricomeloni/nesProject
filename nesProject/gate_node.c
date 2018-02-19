@@ -14,9 +14,6 @@
 PROCESS(gate_node_init, "Gate Node init Process");
 AUTOSTART_PROCESSES(&gate_node_init, &alarm_process);
 
-
-extern process_event_t alarm_toggled_event;
-
 void processCUCommand(unsigned char command)
 {
 	if( command == ALARM_TOGGLE_COMMAND )

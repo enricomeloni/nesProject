@@ -49,6 +49,7 @@ PROCESS_THREAD(averageTemperatureProcess, ev, data)
 			// T = -39.60 + 0.01*t
 			
 			double measuredTemperature = -39.60 + 0.01*rawTemperatureReading;
+			//printf("Temp measured %d\n", (int)measuredTemperature);
 			
 			temperatureReadings[lastTemperatureIndex] = measuredTemperature;
 			lastTemperatureIndex = (lastTemperatureIndex + 1) % MAX_TEMPERATURE_READINGS;
@@ -62,6 +63,10 @@ PROCESS_THREAD(averageTemperatureProcess, ev, data)
 				averageTemperature = average(temperatureReadings, lastTemperatureIndex);
 			
 			etimer_reset(&temperatureTimer);
+			
+			//printf("Measured temperature: %d ; Average temperature: %d \n",
+			//	   (int) measuredTemperature,
+			//	   (int) averageTemperature);
 		}
 	
 	PROCESS_END();

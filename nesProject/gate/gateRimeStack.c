@@ -16,13 +16,11 @@ static void recv_runicast(struct runicast_conn *c, const linkaddr_t *from, uint8
 {
 	unsigned char receivedCommand = *( (unsigned char*)packetbuf_dataptr() );
 	
-	#if DEBUG
 	printf("runicast message received from %d.%d, seqno %d, message: %c\n",
 		   from->u8[0],
 		   from->u8[1],
 		   seqno,
 		   receivedCommand);
-	#endif
 	
 	if(linkaddr_cmp(from, &centralNodeAddress))
 	{

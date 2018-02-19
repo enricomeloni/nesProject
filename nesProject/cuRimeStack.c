@@ -3,16 +3,13 @@
 //
 #include "cuRimeStack.h"
 #include "commons/addresses.h"
-#include "commons/constants.h"
+#include "constants.h"
 
 #include "stdio.h"
 #include "net/rime/rime.h"
 
 extern void processDoorMessage(unsigned char* message, int payloadSize);
 extern void processGateMessage(unsigned char* message, int payloadSize);
-extern void processMboxMessage(unsigned char* message, int payloadSize);
-
-extern void setNodesAddresses();
 
 static void recv_runicast(struct runicast_conn *c, const linkaddr_t *from, uint8_t seqno)
 {
@@ -53,13 +50,6 @@ static void timedout_runicast(struct runicast_conn *c, const linkaddr_t *to, uin
 static const struct runicast_callbacks runicast_calls = {recv_runicast, sent_runicast, timedout_runicast};
 static struct runicast_conn doorRunicastConnection;
 static struct runicast_conn gateRunicastConnection;
- static void
-broadcast_recv(struct broadcast_conn *c, const linkaddr_t *from){}
-
-static struct broadcast_conn roomLightBroadcastConnection;
-static const struct broadcast_callbacks broadcast_call = {broadcast_recv};
-
-
 
 void sendDoorNode(unsigned char* c, int bytes)
 {
@@ -71,12 +61,6 @@ void sendGateNode(unsigned char* c, int bytes)
 {
 	packetbuf_copyfrom(c, bytes);
 	runicast_send(&gateRunicastConnection, &gateNodeAddress, MAX_RETRANSMISSIONS);
-}
-
-void sendRoomLightNodes(unsigned char* c, int bytes)
-{
-	packetbuf_copyfrom(c,bytes);
-	broadcast_send(&roomLightBroadcastConnection);
 }
 
 void initCURimeStack()

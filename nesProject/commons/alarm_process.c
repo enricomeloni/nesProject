@@ -19,8 +19,6 @@ PROCESS_THREAD(alarm_process, ev, data)
 	
 	PROCESS_BEGIN();
 	
-		alarm_toggled_event = process_alloc_event();
-	
 		while(1)
 		{
 			PROCESS_WAIT_EVENT();
