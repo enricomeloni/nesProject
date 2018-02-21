@@ -1,4 +1,3 @@
-
 #include "stdio.h"
 #include "contiki.h"
 #include "sys/etimer.h"

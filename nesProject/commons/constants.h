@@ -1,7 +1,3 @@
-//
-// Created by enric on 27/10/2017.
-//
-
 #ifndef NESPROJECT_CONSTANTS_H
 #define NESPROJECT_CONSTANTS_H
 
