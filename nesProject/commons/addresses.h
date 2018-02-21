@@ -19,7 +19,7 @@
 #define RL_NODE_HIGH 5
 #define RL_NODE_LOW 0
 
-#define RIME_CHANNEL 144
+#define RUNICAST_CHANNEL 144
 
 extern linkaddr_t centralNodeAddress;
 extern linkaddr_t doorNodeAddress;

@@ -12,6 +12,7 @@ extern void processGateMessage(unsigned char* message, int payloadSize);
 extern void setNodesAddresses();
 
 static struct runicast_conn cuRunicastConnection;
+static struct broadcast_conn alarmConnection;
 
 void forward(unsigned char* buffer, int bytes, char nextHop);
 
@@ -109,5 +110,5 @@ void initCURimeStack()
 	
 	printf("My address is %d.%d\n", linkaddr_node_addr.u8[0], linkaddr_node_addr.u8[1]);
 	
-	runicast_open(&cuRunicastConnection, RIME_CHANNEL, &runicast_calls);
+	runicast_open(&cuRunicastConnection, RUNICAST_CHANNEL, &runicast_calls);
 }
