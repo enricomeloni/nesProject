@@ -20,6 +20,8 @@
 #define RL_NODE_LOW 0
 
 #define RUNICAST_CHANNEL 144
+#define GATE_ALARM_CHANNEL 154
+#define DOOR_ALARM_CHANNEL 164
 
 extern linkaddr_t centralNodeAddress;
 extern linkaddr_t doorNodeAddress;

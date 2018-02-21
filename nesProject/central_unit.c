@@ -23,10 +23,8 @@ void command_switch(unsigned char command)
     {
         printf("Alarm Toggled\n");
         isAlarmOn = !isAlarmOn;
-        
-
-        sendGateNode(&command, 1);
-        sendDoorNode(&command, 1);
+    
+        sendAlarm(&command, 1);
 
         return;
     }

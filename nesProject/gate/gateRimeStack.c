@@ -48,6 +48,7 @@ static void timedout_runicast(struct runicast_conn *c, const linkaddr_t *to, uin
 
 static const struct runicast_callbacks runicast_calls = {recv_runicast, sent_runicast, timedout_runicast};
 static struct runicast_conn cuRunicastConnection;
+static struct runicast_conn alarmRunicastConnection;
 
 void initGateRimeStack()
 {
@@ -56,6 +57,7 @@ void initGateRimeStack()
 	printf("My address is %d.%d\n", linkaddr_node_addr.u8[0], linkaddr_node_addr.u8[1]);
 	
 	runicast_open(&cuRunicastConnection, RUNICAST_CHANNEL, &runicast_calls);
+	runicast_open(&alarmRunicastConnection, GATE_ALARM_CHANNEL, &runicast_calls);
 }
 
 void sendFromGateToCentralUnit(unsigned char *cmd, int bytes)

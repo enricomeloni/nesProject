@@ -12,7 +12,8 @@ extern void processGateMessage(unsigned char* message, int payloadSize);
 extern void setNodesAddresses();
 
 static struct runicast_conn cuRunicastConnection;
-static struct broadcast_conn alarmConnection;
+static struct runicast_conn doorAlarmConnection;
+static struct runicast_conn gateAlarmConnection;
 
 void forward(unsigned char* buffer, int bytes, char nextHop);
 
@@ -82,6 +83,20 @@ void sendGateNode(unsigned char* c, int bytes)
 	free(buffer);
 }
 
+void sendAlarm(unsigned char* c, int bytes)
+{
+	unsigned char* buffer;
+	char bufferLength = setBuffer(&buffer, c, bytes, CENTRAL_UNIT_HIGH, GATE_NODE_HIGH);
+	packetbuf_copyfrom(buffer, bufferLength);
+	runicast_send(&gateAlarmConnection, &gateNodeAddress, MAX_RETRANSMISSIONS);
+	free(buffer);
+	
+	bufferLength = setBuffer(&buffer, c, bytes, CENTRAL_UNIT_HIGH, DOOR_NODE_HIGH);
+	packetbuf_copyfrom(buffer, bufferLength);
+	runicast_send(&doorAlarmConnection, &doorNodeAddress, MAX_RETRANSMISSIONS);
+	free(buffer);
+}
+
 void forward(unsigned char* buffer, int bytes, char nextHop)
 {
 	packetbuf_copyfrom(buffer, bytes);
@@ -111,4 +126,6 @@ void initCURimeStack()
 	printf("My address is %d.%d\n", linkaddr_node_addr.u8[0], linkaddr_node_addr.u8[1]);
 	
 	runicast_open(&cuRunicastConnection, RUNICAST_CHANNEL, &runicast_calls);
+	runicast_open(&gateAlarmConnection, GATE_ALARM_CHANNEL, &runicast_calls);
+	runicast_open(&doorAlarmConnection, DOOR_ALARM_CHANNEL, &runicast_calls);
 }
