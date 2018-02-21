@@ -11,10 +11,8 @@ extern void processGateMessage(unsigned char* message, int payloadSize);
 
 extern void setNodesAddresses();
 
-static struct runicast_conn doorRunicastConnection;
-static struct runicast_conn gateRunicastConnection;
-static struct runicast_conn htRunicastConnection;
-static struct runicast_conn rlRunicastConnection;
+static struct runicast_conn cuRunicastConnection;
+
 void forward(unsigned char* buffer, int bytes, char nextHop);
 
 static void recv_runicast(struct runicast_conn *c, const linkaddr_t *from, uint8_t seqno)
@@ -70,7 +68,7 @@ void sendDoorNode(unsigned char* c, int bytes)
 	unsigned char* buffer;
 	char bufferLength = setBuffer(&buffer, c, bytes, CENTRAL_UNIT_HIGH, DOOR_NODE_HIGH);
 	packetbuf_copyfrom(buffer, bufferLength);
-	runicast_send(&doorRunicastConnection, &doorNodeAddress, MAX_RETRANSMISSIONS);
+	runicast_send(&cuRunicastConnection, &doorNodeAddress, MAX_RETRANSMISSIONS);
 	free(buffer);
 }
 
@@ -79,7 +77,7 @@ void sendGateNode(unsigned char* c, int bytes)
 	unsigned char* buffer;
 	char bufferLength = setBuffer(&buffer, c, bytes, CENTRAL_UNIT_HIGH, GATE_NODE_HIGH);
 	packetbuf_copyfrom(buffer, bufferLength);
-	runicast_send(&gateRunicastConnection, &gateNodeAddress, MAX_RETRANSMISSIONS);
+	runicast_send(&cuRunicastConnection, &gateNodeAddress, MAX_RETRANSMISSIONS);
 	free(buffer);
 }
 
@@ -89,16 +87,16 @@ void forward(unsigned char* buffer, int bytes, char nextHop)
 	switch(nextHop)
 	{
 		case RL_NODE_HIGH:
-			runicast_send(&rlRunicastConnection, &rlNodeAddress, MAX_RETRANSMISSIONS);
+			runicast_send(&cuRunicastConnection, &rlNodeAddress, MAX_RETRANSMISSIONS);
 			break;
 		case GATE_NODE_HIGH:
-			runicast_send(&gateRunicastConnection, &gateNodeAddress, MAX_RETRANSMISSIONS);
+			runicast_send(&cuRunicastConnection, &gateNodeAddress, MAX_RETRANSMISSIONS);
 			break;
 		case DOOR_NODE_HIGH:
-			runicast_send(&doorRunicastConnection, &doorNodeAddress, MAX_RETRANSMISSIONS);
+			runicast_send(&cuRunicastConnection, &doorNodeAddress, MAX_RETRANSMISSIONS);
 			break;
 		case HT_NODE_HIGH:
-			runicast_send(&htRunicastConnection, &htNodeAddress, MAX_RETRANSMISSIONS);
+			runicast_send(&cuRunicastConnection, &htNodeAddress, MAX_RETRANSMISSIONS);
 			break;
 		default:
 			printf("Invalid next hop\n");
@@ -111,8 +109,5 @@ void initCURimeStack()
 	
 	printf("My address is %d.%d\n", linkaddr_node_addr.u8[0], linkaddr_node_addr.u8[1]);
 	
-	runicast_open(&doorRunicastConnection, CU_DOOR_CHANNEL, &runicast_calls);
-	runicast_open(&gateRunicastConnection, CU_GATE_CHANNEL, &runicast_calls);
-	runicast_open(&htRunicastConnection, HT_CU_CHANNEL, &runicast_calls);
-	runicast_open(&rlRunicastConnection, CU_RL_CHANNEL, &runicast_calls);
+	runicast_open(&cuRunicastConnection, RIME_CHANNEL, &runicast_calls);
 }

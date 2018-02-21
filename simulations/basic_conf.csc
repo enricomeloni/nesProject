@@ -230,7 +230,7 @@
   <plugin>
     org.contikios.cooja.plugins.SimControl
     <width>280</width>
-    <z>1</z>
+    <z>0</z>
     <height>160</height>
     <location_x>400</location_x>
     <location_y>0</location_y>
@@ -249,7 +249,7 @@
       <viewport>27.297938185337188 0.0 0.0 27.297938185337188 -211.13413837290489 -309.17139422053884</viewport>
     </plugin_config>
     <width>400</width>
-    <z>0</z>
+    <z>1</z>
     <height>400</height>
     <location_x>1</location_x>
     <location_y>1</location_y>
@@ -328,7 +328,7 @@
     org.contikios.cooja.plugins.MoteInterfaceViewer
     <mote_arg>0</mote_arg>
     <plugin_config>
-      <interface>Position</interface>
+      <interface>Button</interface>
       <scrollpos>0,0</scrollpos>
     </plugin_config>
     <width>350</width>

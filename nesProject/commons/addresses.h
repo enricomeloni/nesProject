@@ -19,10 +19,7 @@
 #define RL_NODE_HIGH 5
 #define RL_NODE_LOW 0
 
-#define CU_DOOR_CHANNEL 144
-#define CU_GATE_CHANNEL 154
-#define HT_CU_CHANNEL 164
-#define CU_RL_CHANNEL 174
+#define RIME_CHANNEL 144
 
 extern linkaddr_t centralNodeAddress;
 extern linkaddr_t doorNodeAddress;

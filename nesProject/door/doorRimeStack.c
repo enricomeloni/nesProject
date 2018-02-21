@@ -55,7 +55,7 @@ void initDoorRimeStack()
 	
 	printf("My address is %d.%d\n", linkaddr_node_addr.u8[0], linkaddr_node_addr.u8[1]);
 	
-	runicast_open(&cuRunicastConnection, CU_DOOR_CHANNEL, &runicast_calls);
+	runicast_open(&cuRunicastConnection, RIME_CHANNEL, &runicast_calls);
 }
 
 void sendFromDoorToCentralUnit(unsigned char *cmd, int bytes)
