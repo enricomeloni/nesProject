@@ -98,7 +98,6 @@ PROCESS_THREAD(door_node_main, ev, data)
 				//if the alarm is on, commands must be ignored
 				if(!isAlarmOn)
 				{
-					//toggle alarm lights
 					leds_toggle(LEDS_GREEN | LEDS_RED);
 				}
 			}

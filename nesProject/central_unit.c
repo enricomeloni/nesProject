@@ -14,11 +14,9 @@ PROCESS(central_unit_main, "Central Unit Main Process");
 
 AUTOSTART_PROCESSES(&central_unit_main, &command_process);
 
-
+static int isAlarmOn = 0;
 void command_switch(unsigned char command)
 {
-    static int isAlarmOn = 0;
-
     if(command == ALARM_TOGGLE_COMMAND)
     {
         printf("Alarm Toggled\n");
@@ -77,6 +75,18 @@ void command_switch(unsigned char command)
     }
 }
 
+void print_commands()
+{
+    if(isAlarmOn)
+    {
+        printf("No commands available: alarm is on\n");
+    }
+    else
+    {
+        printf("Available commands:\n1. Toggle alarm\n2. Lock/Unlock gate\n3. Auto open gate and door\n4. Get average temperature\n5. Get light intensity\n");
+    }
+}
+
 void processDoorMessage(unsigned char* message, int payloadSize)
 {
     unsigned char cmd = message[0];
@@ -107,5 +117,6 @@ PROCESS_THREAD(central_unit_main, ev, data)
     PROCESS_BEGIN();
 	initCURimeStack();
     leds_off(LEDS_ALL);
+    print_commands();
     PROCESS_END();
 }

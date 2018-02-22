@@ -8,8 +8,8 @@
 #include "commons/command_process.h"
 #include "home_theater/htRimeStack.h"
 
-PROCESS(mbox_node_init, "Mbox Node init Process");
-AUTOSTART_PROCESSES(&mbox_node_init, &command_process);
+PROCESS(ht_node_init, "Mbox Node init Process");
+AUTOSTART_PROCESSES(&ht_node_init, &command_process);
 
 /*
     state = 0 stopped
@@ -76,10 +76,28 @@ void command_switch(unsigned char command)
     setLeds(state);
 }
 
-PROCESS_THREAD(mbox_node_init, ev, data)
+void print_commands()
+{
+    printf("Available commands:\n");
+    if(state == HT_STOPPED)
+    {
+        printf("1. Play");
+    }
+    else if(state == HT_PLAYING)
+    {
+        printf("1. Pause\n2. Stop\n");
+    }
+    else if(state == HT_PAUSED)
+    {
+        printf("1. Play\n2. Stop\n");
+    }
+}
+
+PROCESS_THREAD(ht_node_init, ev, data)
 {
 	PROCESS_BEGIN();
 		initHTRimeStack();
         setLeds(HT_STOPPED);
+        print_commands();
 	PROCESS_END();
 }

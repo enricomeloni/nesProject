@@ -59,8 +59,7 @@ void processCUCommand(unsigned char command)
 					printf("External light value: %d\n", 
 						(int) externalLight);
 
-					//1 byte for cmd, 4 bytes for payload size, 
-					//4 bytes for float
+					//1 byte for cmd, 4 bytes for float
 					unsigned char buff[5];
 
 					//payload size is 5 bytes, cmd:1bytes; float:4bytes

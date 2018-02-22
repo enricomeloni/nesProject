@@ -10,6 +10,7 @@
 #include "command_process.h"
 
 extern void command_switch(unsigned char command);
+extern void print_commands();
 
 PROCESS(command_process, "Command picker process");
 
@@ -46,6 +47,7 @@ PROCESS_THREAD(command_process, ev, data)
 				etimer_stop(&commandTimeout);
 				command_switch(buttonCount);
 				buttonCount = 0;
+				print_commands();
 			}
 		}
 	}
